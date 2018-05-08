@@ -6,5 +6,12 @@
 </head>
 <body>
     To wszystko jest do dupy...Ale strona glowna jest ;p
+    {%  if file %}
+        <ul>
+            <li>{{ file.adres }}</li>
+            <li>{{ file.czy_udostepniony }}</li>
+            <li>{{ file.nazwa }}</li>
+        </ul>
+    {% endif %}
 </body>
 </html>
