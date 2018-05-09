@@ -1,0 +1,36 @@
+body{
+    background-color: white;
+    font-size: medium;
+    text-align: center;
+}
+
+.h3 {
+    font-size: xx-large;
+    font-weight: bold;
+}
+
+.mybutton {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.5s;
+}
+
+.mybutton:hover {
+    background-color: white;
+    border: 2px solid green;
+    color: black;
+}
+
+.mylabel{
+    cursor: default;
+    font-size: medium;
+}
+
+#termsNprivacy{
+    font-size: smaller;
+}
