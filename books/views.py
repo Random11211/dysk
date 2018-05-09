@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
     logout as auth_logout, update_session_auth_hash,
@@ -20,6 +21,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from django.shortcuts import render
 from django.template import RequestContext
 from books.models import Plik
+from books.models import Konto
 from django.http import HttpResponse
 
 # Create your views here.
@@ -43,6 +45,11 @@ def cloud_menu(request):
 
 
 def registration(request):
+    userName = request.REQUEST.get('username', None)
+    userPass = request.REQUEST.get('password', None)
+    konto = Konto();
+    konto.uzytkownik = User.objects.create_user(userName = userName,
+                                                password=userPass)
     return render(request, 'registration.html')
 
 
