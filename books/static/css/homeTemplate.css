@@ -1,12 +1,13 @@
 body {
-    background-color: white;
+    background: ghostwhite url(background.jpg) no-repeat;
+    background-size: cover;
+
 }
 
 .navbar {
     height: 150px;
-    background: lightskyblue url(background.jpg) no-repeat;
-    background-size: cover;
     font-size: 25px;
+    font-weight: bold;
     font-family: FreeMono;
 }
 
@@ -24,5 +25,5 @@ body {
 }
 
 .actions > li > a {
-    color: darkgoldenrod;
+    color: yellow;
 }

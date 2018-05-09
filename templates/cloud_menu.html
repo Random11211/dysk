@@ -19,9 +19,9 @@
     <div class="filesView">
         {% for i in file %}
             <ul>
-                <li>{{ file.adres }}</li>
-                <li>{{ file.czy_udostepniony }}</li>
-                <li>{{ file.nazwa }}</li>
+                <li>{{ i.adres }}</li>
+                <li>{{ i.czy_udostepniony }}</li>
+                <li>{{ i.nazwa }}</li>
             </ul>
         {% endfor %}
     </div>
