@@ -16,6 +16,10 @@ from django.shortcuts import render
 from books.models import Plik
 from books.models import Konto
 from books.models import get_user_model
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+
 
 # Create your views here.
 
@@ -39,12 +43,18 @@ def cloud_menu(request):
 
 
 def registration(request):
-    userName = request.REQUEST.get('username', None)
-    userPass = request.REQUEST.get('password', None)
-    konto = Konto();
-    konto.uzytkownik = User.objects.create_user(userName = userName,
-                                                password=userPass)
-    return render(request, 'registration.html')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('home')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration.html', {'form': form})
 
 
 def login(request,template_name='login.html',
