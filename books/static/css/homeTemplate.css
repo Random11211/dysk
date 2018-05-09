@@ -1,0 +1,26 @@
+body {
+    background-color: white;
+}
+
+.navbar {
+    height: 150px;
+    background: lightskyblue url(background.jpg) no-repeat;
+    background-size: cover;
+
+    font-size: 25px;
+    font-family: FreeMono;
+}
+
+.actions {
+    list-style-type: none;
+}
+
+.actions li {
+    float: left;
+    display: table-cell;
+    padding: 25px;
+}
+
+.actions > li > a {
+    color: darkgoldenrod;
+}

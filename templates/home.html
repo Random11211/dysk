@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    
-    <title>Title</title>
+{% extends "homeTemplate.html" %}
 
-</head>
-<body>
-    To wszystko jest do dupy...Ale strona glowna jest ;p hahaaha
-    {%  if file %}
-        <ul>
-            <li>{{ file.adres }}</li>
-            <li>{{ file.czy_udostepniony }}</li>
-            <li>{{ file.nazwa }}</li>
-        </ul>
-    {% endif %}
-</body>
-</html>
+{% block actions %}
+<li>
+    <a href="#">Log out</a>
+</li>
+<li>
+    <a href="#">Dodaj plik</a>
+</li>
+<li>
+    <a href="#">Nowy folder</a>
+</li>
+{% endblock %}
