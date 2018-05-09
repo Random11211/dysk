@@ -3,19 +3,11 @@
 {% load staticfiles %}
 
 {% block user_control %}
-<h3 class="h3">Registration Page</h3>
+    <h3 class="h3">Registration Page</h3>
     <p>Fill in forms to sign up.</p>
-
-    <label class="mylabel" for="username"><b>Username: </b></label>
-    <input type="text" placeholder="Enter Username" name="username" required>
-
-    <label class="mylabel" for="username"><b>Password: </b></label>
-    <input type="password" placeholder="Enter Password" name="password" required>
-
-    <p id="termsNprivacy">By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
-
-    <div>
-      <button class="mybutton" type="button">CANCEL</button>
-      <button class="mybutton" type="button">SIGN UP</button>
-    </div>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="mybutton" type="submit">Sign up</button>
+    </form>
 {% endblock %}
