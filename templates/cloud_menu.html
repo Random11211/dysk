@@ -17,7 +17,13 @@
 
 {% block content %}
     <div class="filesView">
-
+        {% for i in file %}
+            <ul>
+                <li>{{ file.adres }}</li>
+                <li>{{ file.czy_udostepniony }}</li>
+                <li>{{ file.nazwa }}</li>
+            </ul>
+        {% endfor %}
     </div>
     <div>
 

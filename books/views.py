@@ -34,7 +34,11 @@ def index(request):
 
 def cloud_menu(request):
     plik = Plik.objects.create(adres="adres", nazwa="pliczek")
-    context_dict = {"file:", plik}
+    lista = list()
+    lista.append(plik)
+    plik = Plik.objects.create(adres="tak", nazwa="pik")
+    lista.append(plik)
+    context_dict = {"file", lista}
     return render(request, 'cloud_menu.html', context_dict)
 
 
