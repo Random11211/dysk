@@ -7,22 +7,15 @@ from django.contrib.auth import (
 from django.contrib.auth.forms import (
     AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
 )
-from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect, QueryDict
 from django.shortcuts import resolve_url
 from django.template.response import TemplateResponse
-from django.utils.encoding import force_text
 from django.utils.http import is_safe_url, urlsafe_base64_decode
-from django.utils.translation import ugettext as _
-from django.views.decorators.cache import never_cache
-from django.views.decorators.csrf import csrf_protect
-from django.views.decorators.debug import sensitive_post_parameters
 from django.shortcuts import render
-from django.template import RequestContext
 from books.models import Plik
 from books.models import Konto
-from django.http import HttpResponse
+from books.models import get_user_model
 
 # Create your views here.
 
@@ -40,7 +33,8 @@ def cloud_menu(request):
     lista.append(plik)
     plik = Plik.objects.create(adres="tak", nazwa="pik")
     lista.append(plik)
-    context_dict = {"file": lista}
+    uzytkownik = get_user_model()
+    context_dict = {"file": uzytkownik}
     return render(request, 'cloud_menu.html', context_dict)
 
 
