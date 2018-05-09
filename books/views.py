@@ -9,7 +9,6 @@ from django.http import HttpResponse
  #   return HttpResponse("Hello")
 
 
-
 def index(request):
     context = RequestContext(request)
     plik = Plik.objects.create(adres="adres", nazwa="pliczek")
