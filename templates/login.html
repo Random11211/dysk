@@ -1,19 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
+{% extends "homeTemplate.html" %}
+{% load staticfiles %}
+
+{% block cssStore %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/homeTemplate.css' %}">
+{% endblock %}
+
+{% block actions %}
+<li>
+    <a href="..">Home</a>
+</li>
+{% endblock %}
 
     {% block content %}
   <h2>Sign in</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Login</button>
+
+      <Li>
+          <a href=".."><button type="submit">Login</button></a>
+      </Li>
+
   </form>
     {% endblock content %}
-
-</body>
-</html>

@@ -29,14 +29,22 @@ from django.http import HttpResponse
 
 
 def index(request):
-    context = RequestContext(request)
-    plik = Plik.objects.create(adres="adres", nazwa="pliczek")
-    context_dict = {"file": plik}
+    return render(request, 'home.html')
 
-    return render(request, 'home.html', context_dict)
+
+def cloud_menu(request):
+    plik = Plik.objects.create(adres="adres", nazwa="pliczek")
+    lista = list()
+    lista.append(plik)
+    plik = Plik.objects.create(adres="tak", nazwa="pik")
+    lista.append(plik)
+    context_dict = {"file", lista}
+    return render(request, 'cloud_menu.html', context_dict)
+
 
 def registration(request):
     return render(request, 'registration.html')
+
 
 def login(request,template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,

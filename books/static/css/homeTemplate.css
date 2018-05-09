@@ -6,16 +6,18 @@ body {
     height: 150px;
     background: lightskyblue url(background.jpg) no-repeat;
     background-size: cover;
-
     font-size: 25px;
     font-family: FreeMono;
 }
 
 .actions {
     list-style-type: none;
+    margin: 0 auto;
+    display: table;
+    height: inherit;
 }
 
-.actions li {
+.actions > li {
     float: left;
     display: table-cell;
     padding: 25px;

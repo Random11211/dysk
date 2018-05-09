@@ -1,13 +1,15 @@
 {% extends "homeTemplate.html" %}
+{% load staticfiles %}
+
+{% block cssStore %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/homeTemplate.css' %}">
+{% endblock %}
 
 {% block actions %}
 <li>
-    <a href="#">Log out</a>
+    <a href="#">Log in</a>
 </li>
 <li>
-    <a href="#">Dodaj plik</a>
-</li>
-<li>
-    <a href="#">Nowy folder</a>
+    <a href="#">Register</a>
 </li>
 {% endblock %}

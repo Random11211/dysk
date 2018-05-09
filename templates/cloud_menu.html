@@ -1,0 +1,31 @@
+{% extends 'homeTemplate.html' %}
+{% load staticfiles %}
+
+{% block actions %}
+    <li>
+        Dodaj plik
+    </li>
+    <li>
+        Nowy katalog
+    </li>
+    <li>
+        Wyloguj
+    </li>
+
+
+{% endblock %}
+
+{% block content %}
+    <div class="filesView">
+        {% for i in file %}
+            <ul>
+                <li>{{ file.adres }}</li>
+                <li>{{ file.czy_udostepniony }}</li>
+                <li>{{ file.nazwa }}</li>
+            </ul>
+        {% endfor %}
+    </div>
+    <div>
+
+    </div>
+{% endblock %}
