@@ -35,6 +35,9 @@ def index(request):
 
     return render(request, 'home.html', context_dict)
 
+def registration(request):
+    return render(request, 'registration.html')
+
 def login(request,template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
