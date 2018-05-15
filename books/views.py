@@ -80,7 +80,7 @@ def login(request,template_name='login.html',
             # Okay, security check complete. Log the user in.
             auth_login(request, form.get_user())
 
-            return HttpResponseRedirect(redirect_to)
+            return redirect('../storage_control')
     else:
         form = authentication_form(request)
 
