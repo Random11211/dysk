@@ -2,10 +2,36 @@ body {
     padding: 10px;
 }
 
+.left_dock {
+    position: fixed;
+    left: 0;
+    top: 10%;
+    height: 90%;
+    width: 20%;
+    background-color: greenyellow;
+}
+
+.fill_dock {
+    position: fixed;
+    background-color: yellow;
+    left: 20%;
+    top: 10%;
+    width: 80%;
+    height: 90%;
+}
+
+.top_dock {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 10%;
+    width: 100%;
+    background-color: black;
+}
+
 .menu_items {
     display: block;
     list-style-type: none;
-    display: table;
 }
 
 .menu_items > li {
