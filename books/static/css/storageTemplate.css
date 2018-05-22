@@ -30,11 +30,43 @@ body {
 }
 
 .menu_items {
-    display: block;
     list-style-type: none;
 }
 
 .menu_items > li {
-    display: table-cell;
-    padding: 25px 25px;
+    overflow: auto;
+    padding: 25px 10px;
+}
+
+.table_description {
+    display: table;
+    margin: 15px 5px;
+    list-style-type: none;
+    width: inherit;
+    overflow-x: scroll;
+}
+
+.table_description > li {
+    float: left;
+}
+
+.file_name {
+    width: 60%;
+}
+
+.file_size {
+    width: 30%;
+}
+
+.file_shared {
+    width: 10%;
+}
+
+.files_list {
+    list-style-type: none;
+}
+
+.file {
+    list-style-type: none;
+    width: inherit;
 }

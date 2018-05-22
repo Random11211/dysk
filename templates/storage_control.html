@@ -13,11 +13,23 @@
 {% endblock %}
 
 {% block files_list %}
-    {% for i in file %}
-        <ul>
-            <li>{{ i.adres }}</li>
-            <li>{{ i.czy_udostepniony }}</li>
-            <li>{{ i.nazwa }}</li>
+        <ul class="table_description">
+            <li class="file_name" role="presentation">Nazwa</li>
+            <li class="file_size" role="presentation">Rozmiar pliku</li>
+            <li class="file_shared" role="presentation">Udostepniony</li>
         </ul>
+    <hr>
+
+    <div class="files_list">
+
+    {% for i in file %}
+        <ul class="file">
+            <li class="file_name">{{ i.nazwa }}</li>
+            <li class="file_size">{{ i.adres }}</li>
+            <li class="file_shared">{{ i.czy_udostepniony }}</li>
+        </ul>
+        <hr><hr>
     {% endfor %}
+
+    </div>
 {% endblock %}
