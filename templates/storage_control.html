@@ -1,0 +1,19 @@
+{% extends "storageTemplate.html" %}
+{% load staticfiles %}
+
+{% block menu_bar %}
+    <ul class="menu_items">
+        <li>Add file</li>
+        <li>Add directory</li>
+    </ul>
+{% endblock %}
+
+{% block files_list %}
+    {% for i in file %}
+        <ul>
+            <li>{{ i.adres }}</li>
+            <li>{{ i.czy_udostepniony }}</li>
+            <li>{{ i.nazwa }}</li>
+        </ul>
+    {% endfor %}
+{% endblock %}

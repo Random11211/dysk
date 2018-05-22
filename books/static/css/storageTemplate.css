@@ -1,0 +1,14 @@
+body {
+    padding: 10px;
+}
+
+.menu_items {
+    display: block;
+    list-style-type: none;
+    display: table;
+}
+
+.menu_items > li {
+    display: table-cell;
+    padding: 25px 25px;
+}

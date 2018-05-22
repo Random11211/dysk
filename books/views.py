@@ -31,15 +31,19 @@ def index(request):
     return render(request, 'home.html')
 
 
-def cloud_menu(request):
+def storage_control(request):
     plik = Plik.objects.create(adres="adres", nazwa="pliczek")
     lista = list()
     lista.append(plik)
-    plik = Plik.objects.create(adres="tak", nazwa="pik")
+    plik = Plik.objects.create(adres="tak", nazwa="plik")
     lista.append(plik)
-    uzytkownik = get_user_model()
-    context_dict = {"file": uzytkownik}
-    return render(request, 'cloud_menu.html', context_dict)
+    context_dict = {"file": lista}
+
+    return render(request, 'storage_control.html', context_dict)
+
+
+def cloud_menu(request):
+    return redirect(request,  'storage_control.html')
 
 
 def registration(request):
@@ -51,7 +55,7 @@ def registration(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('../')
+            return redirect('storage_control.html')
     else:
         form = UserCreationForm()
     return render(request, 'registration.html', {'form': form})
@@ -76,7 +80,7 @@ def login(request,template_name='login.html',
             # Okay, security check complete. Log the user in.
             auth_login(request, form.get_user())
 
-            return HttpResponseRedirect(redirect_to)
+            return redirect('../storage_control')
     else:
         form = authentication_form(request)
 

@@ -5,13 +5,19 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/registrationStyle.css' %}">
-    <title>Sign up</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/storageTemplate.css' %}">
+    <title>Storage</title>
 </head>
 <body>
 
-<div class="main_block">
-    {% block user_control %}
+<div class="top_dock">
+    {% block menu_bar %}
+
+    {% endblock %}
+</div>
+
+<div>
+    {% block files_list %}
 
     {% endblock %}
 </div>

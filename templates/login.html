@@ -1,14 +1,14 @@
 {% extends "userTemplate.html" %}
+
 {% load staticfiles %}
 
 {% block user_control %}
-  <h2>Sign in</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-      <div>
-          <a href=".."><button class="mybutton" type="submit">Login</button></a>
-      </div>
-  </form>
+    <h2>Service login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <a href=".."><button class="mybutton" type="submit">Sign in</button></a>
+        </div>
+    </form>
 {% endblock %}
