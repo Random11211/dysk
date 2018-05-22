@@ -38,35 +38,14 @@ body {
     padding: 25px 10px;
 }
 
-.table_description {
-    display: table;
-    margin: 15px 5px;
-    list-style-type: none;
-    width: inherit;
-    overflow-x: scroll;
+.table {
+    width: 100%;
 }
 
-.table_description > li {
-    float: left;
+.description {
+    background-color: blanchedalmond;
 }
 
-.file_name {
-    width: 60%;
-}
-
-.file_size {
-    width: 30%;
-}
-
-.file_shared {
-    width: 10%;
-}
-
-.files_list {
-    list-style-type: none;
-}
-
-.file {
-    list-style-type: none;
-    width: inherit;
+.space {
+    margin: 10px;
 }
