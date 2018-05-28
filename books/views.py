@@ -5,7 +5,7 @@ from django.contrib.auth import (
     logout as auth_logout, update_session_auth_hash,
 )
 from django.contrib.auth.forms import (
-    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 )
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect, QueryDict
@@ -16,10 +16,11 @@ from django.shortcuts import render
 from books.models import Plik
 from books.models import Konto
 from books.models import get_user_model
-from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 
+from django.contrib.auth import login, authenticate
+from books.forms import SignUpForm
 
 # Create your views here.
 
@@ -48,7 +49,7 @@ def cloud_menu(request):
 
 def registration(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -57,7 +58,7 @@ def registration(request):
             login(request, user)
             return redirect('storage_control.html')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'registration.html', {'form': form})
 
 
