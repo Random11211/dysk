@@ -2,18 +2,38 @@
 {% load staticfiles %}
 
 {% block menu_bar %}
+
+{% endblock %}
+
+{% block left_bar %}
     <ul class="menu_items">
-        <li>Add file</li>
-        <li>Add directory</li>
+        <li>Prześlij plik</li>
+        <li>Nowy katalog</li>
     </ul>
+    <div class="space">
+        <div class="drive_space">
+            pojemnosc: 50MB
+        </div>
+        <div class="left_space">
+            wykorzystano 50% pojemnosci
+        </div>
+    </div>
+
 {% endblock %}
 
 {% block files_list %}
-    {% for i in file %}
-        <ul>
-            <li>{{ i.adres }}</li>
-            <li>{{ i.czy_udostepniony }}</li>
-            <li>{{ i.nazwa }}</li>
-        </ul>
-    {% endfor %}
+    <table class="table">
+        <tr class="description">
+            <th>Nazwa</th>
+            <th>Rozmiar pliku</th>
+            <th>Udostepniony</th>
+        </tr>
+        {% for i in file %}
+            <tr>
+                <td>{{ i.nazwa }}</td>
+                <td>{{ i.adres }}</td>
+                <td>{{ i.czy_udostepniony }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 {% endblock %}
