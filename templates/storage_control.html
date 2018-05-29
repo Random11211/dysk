@@ -1,5 +1,6 @@
 {% extends "storageTemplate.html" %}
 {% load staticfiles %}
+{% load static %}
 
 {% block menu_bar %}
 
@@ -7,8 +8,16 @@
 
 {% block left_bar %}
     <ul class="menu_items">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="myfile">
+            <button type="submit">Upload</button>
+        </form>
         <li>Add file</li>
         <li>Add directory</li>
+    {% if uploaded_file_url %}
+        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a> </p>
+    {% endif %}
     </ul>
 {% endblock %}
 
@@ -26,7 +35,7 @@
         <ul class="file">
             <li class="file_name">{{ i.nazwa }}</li>
             <li class="file_size">{{ i.adres }}</li>
-            <lif class="file_shared">{{ i.czy_udostepniony }}</lif>
+            <li class="file_shared">{{ i.czy_udostepniony }}</li>
         </ul>
         <hr><hr>
     {% endfor %}

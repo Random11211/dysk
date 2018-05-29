@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
@@ -23,8 +24,15 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 
-#def index(request):
- #   return HttpResponse("Hello")
+def simple_upload(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        return render(request, 'storage_control.html', {'uploaded_file_url': uploaded_file_url})
+    return render(request, 'storage_control.html')
+
 
 
 def index(request):
@@ -32,12 +40,17 @@ def index(request):
 
 
 def storage_control(request):
-    plik = Plik.objects.create(adres="adres", nazwa="pliczek")
-    lista = list()
-    lista.append(plik)
-    plik = Plik.objects.create(adres="tak", nazwa="plik")
-    lista.append(plik)
-    context_dict = {"file": lista}
+    #plik = Plik.objects.create(adres="adres", nazwa="pliczek")
+    #plik.save()
+    context_dict = {}
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        context_dict['uploaded_file_url'] = uploaded_file_url
+    lista = Plik.objects.all()
+    context_dict["file"] = lista
 
     return render(request, 'storage_control.html', context_dict)
 
