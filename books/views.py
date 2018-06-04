@@ -63,7 +63,7 @@ def registration(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('storage_control.html')
+            return redirect('../storage_control')
     else:
         form = SignUpForm()
     return render(request, 'registration.html', {'form': form})
