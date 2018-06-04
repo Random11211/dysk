@@ -14,6 +14,7 @@ body {
 .fill_dock {
     position: fixed;
     background-color: yellow;
+    overflow: scroll;
     left: 20%;
     top: 10%;
     width: 80%;
@@ -38,14 +39,41 @@ body {
     padding: 25px 10px;
 }
 
-.table {
-    width: 100%;
+.table_description {
+    display: table;
+    margin: 15px 5px;
+    list-style-type: none;
+    width: inherit;
+    overflow-x: scroll;
 }
 
-.description {
-    background-color: blanchedalmond;
+.table_description > li {
+    float: left;
 }
 
-.space {
-    margin: 10px;
+.file_name {
+    width: 60%;
+}
+
+.file_size {
+    width: 30%;
+}
+
+.file_shared {
+    width: 10%;
+}
+
+.files_list {
+    list-style-type: none;
+}
+
+.file > li {
+    display: block;
+    float: left;
+}
+
+.file {
+    list-style-type: none;
+    display: contents;
+    width: inherit;
 }

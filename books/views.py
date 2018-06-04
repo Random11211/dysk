@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
@@ -18,8 +19,29 @@ from django.shortcuts import resolve_url
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
 from books.models import Plik
+from books.forms import UploadFileForm
+from books.models import Konto
+from books.models import get_user_model
+from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 
 from django.shortcuts import render, redirect
+
+
+# Create your views here.
+
+def simple_upload(request):
+    context_dict = {}
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        context_dict['uploaded_file_url'] = uploaded_file_url
+    lista = Plik.objects.all()
+    context_dict["file"] = lista
+
+    return render(request, 'storage_control.html', context_dict)
 
 from django.contrib.auth import authenticate
 from books.forms import SignUpForm
@@ -29,13 +51,16 @@ def index(request):
 
 
 def storage_control(request):
-    plik = Plik.objects.create(adres="adres", nazwa="pliczek")
-    lista = list()
-    lista.append(plik)
-    plik = Plik.objects.create(adres="tak", nazwa="plik")
-    lista.append(plik)
-    context_dict = {"file": lista}
-
+    #Plik.objects.all().delete()
+    context_dict = {}
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    form = UploadFileForm()
+    context_dict["form"] = form
+    lista = Plik.objects.all()
+    context_dict["file"] = lista
     return render(request, 'storage_control.html', context_dict)
 
 
