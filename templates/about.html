@@ -1,0 +1,93 @@
+{% extends "aboutTemplate.html" %}
+{% load staticfiles %}
+
+{% block cssStore %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mainStyle.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+{% block myNavbar %}
+    {% if user.is_authenticated %}
+        <ul id="left-menu-bar">
+            <li id="icon-cloud"><i id="icon-cloudIcon" class="material-icons hide-small">cloud</i>
+                <div id="firm_name_logo">
+                    <div id="txt1">Cloud</div>
+                    <div id="txt2">Storage</div>
+                    <div id="txt3">Solutions</div>
+                </div>
+            </li>
+            <div id="menu-bar">
+                <li><a href="../main"><i id="icon-mainIcon" class="material-icons">dvr</i><br/>Main</a></li>
+                <li><a href="../storage_control"><i id="icon-mainIcon"
+                                                                       class="material-icons hide-small">view_list</i><br/>Account</a>
+                </li>
+                <li><a href="../about"><i id="icon-mainIcon" class="material-icons hide-small">help_outline</i><br/>About</a></li>
+                <li><a href=""><i id="icon-mainIcon" class="material-icons hide-small">launch</i><br/>Sign out</a></li>
+            </div>
+        </ul>
+    {% else %}
+        <ul id="left-menu-bar">
+            <li id="icon-cloud"><i id="icon-cloudIcon" class="material-icons hide-small">cloud</i>
+                <div id="firm_name_logo">
+                    <div id="txt1">Cloud</div>
+                    <div id="txt2">Storage</div>
+                    <div id="txt3">Solutions</div>
+                </div>
+            </li>
+            <div id="menu-bar">
+                <li><a id="menu-bar-inline" href="../login"><i id="icon-signIcon" class="material-icons hide-small">input</i> Sign in</a>
+                    <a id="menu-bar-inline" href="../registration"><i id="icon-signIcon" class="material-icons hide-small">subject</i> Sign up</a></li>
+                <li><a href="../main"><i id="icon-mainIcon" class="material-icons hide-small">dvr</i><br/>Main</a></li>
+                <li><a href="../about"><i id="icon-mainIcon" class="material-icons hide-small">help_outline</i><br/>About</a></li>
+            </div>
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block pageContent %}
+    <div id="aboutPage">
+        <div id="aboutPage_body">
+            <div class="center-div">
+                <p>
+                    Access files from any device.
+                    <br/>
+                </p>
+                <br/>
+                <img class="about-img" src="../static/css/multi_device_access_image.svg   ">
+            </div>
+            <br/>
+            <div class="center-div">
+                <p>
+                    From any place in the world.
+                </p>
+                <br/>
+                <img class="about-img" src="../static/css/offline_access_image.svg   ">
+            </div>
+            <br/>
+            <div class="center-div">
+                <p>
+                    Keep your files safe.
+                </p>
+                <br/>
+                <img class="about-img" src="../static/css/secure_access_image.svg   ">
+            </div>
+            <br/>
+            <div class="center-div">
+                <p>
+                    Share and collaborate.
+                </p>
+                <br/>
+                <img class="about-img" src="../static/css/share_and_cooperate_image.svg   ">
+            </div>
+            <br/>
+            <div class="center-div">
+                <p>
+                    Do more with <abbr title="Cloud Storage Solutions">CSS</abbr>.
+                </p>
+                <br/>
+                <img class="about-img" src="../static/css/more_possibilities_image.svg   ">
+            </div>
+        </div>
+    </div>
+{% endblock %}

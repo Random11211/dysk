@@ -1,0 +1,67 @@
+{% extends "mainTemplate.html" %}
+{% load staticfiles %}
+
+{% block cssStore %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mainStyle.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+{% endblock %}
+
+{% block myNavbar %}
+    {% if user.is_authenticated %}
+        <ul id="left-menu-bar">
+            <li id="icon-cloud"><i id="icon-cloudIcon" class="material-icons hide-small">cloud</i>
+                <div id="firm_name_logo">
+                    <div id="txt1">Cloud</div>
+                    <div id="txt2">Storage</div>
+                    <div id="txt3">Solutions</div>
+                </div>
+            </li>
+            <div id="menu-bar">
+                <li><a href="../main"><i id="icon-mainIcon" class="material-icons hide-small">dvr</i><br/>Main</a></li>
+                <li><a href="../storage_control"><i id="icon-mainIcon"
+                                                                       class="material-icons hide-small">view_list</i><br/>Account</a>
+                </li>
+                <li><a href="../about"><i id="icon-mainIcon" class="material-icons hide-small">help_outline</i><br/>About</a></li>
+                <li><a href=""><i id="icon-mainIcon" class="material-icons hide-small">launch</i><br/>Sign out</a></li>
+            </div>
+        </ul>
+    {% else %}
+        <ul id="left-menu-bar">
+            <li id="icon-cloud"><i id="icon-cloudIcon" class="material-icons hide-small">cloud</i>
+                <div id="firm_name_logo">
+                    <div id="txt1">Cloud</div>
+                    <div id="txt2">Storage</div>
+                    <div id="txt3">Solutions</div>
+                </div>
+            </li>
+            <div id="menu-bar">
+                <li><a id="menu-bar-inline" href="../login"><i id="icon-signIcon" class="material-icons hide-small">input</i> Sign in</a>
+                    <a id="menu-bar-inline" href="../registration"><i id="icon-signIcon" class="material-icons hide-small">subject</i> Sign up</a></li>
+                <li><a href="../main"><i id="icon-mainIcon" class="material-icons hide-small">dvr</i><br/>Main</a></li>
+                <li><a href="../about"><i id="icon-mainIcon" class="material-icons hide-small">help_outline</i><br/>About</a></li>
+            </div>
+        </ul>
+    {% endif %}
+
+{% endblock %}
+
+{% block pageContent %}
+    <div id="mainPage">
+        <div id="mainPage_body">
+            <div class="center-div">
+                <p>
+                    Save your files and photos to <abbr title="Cloud Storage Solutions">CSS</abbr>
+                    and get them from any device, anywhere
+                </p>
+                <br/>
+                <img class="" src="../static/css/main_image.svg">
+            </div>
+
+        </div>
+        <footer>
+            <p>
+                &copy; Cloud Storage Solutions
+            </p>
+        </footer>
+    </div>
+{% endblock %}

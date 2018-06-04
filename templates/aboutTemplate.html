@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mainStyle.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    {% block cssStore %}
+
+    {% endblock %}
+    <title>About CSS</title>
+</head>
+<body>
+    {% block myNavbar %}
+
+    {% endblock %}
+
+    <div class="page-content">
+        {% block pageContent %}
+
+        {% endblock %}
+    </div>
+</body>
+</html>

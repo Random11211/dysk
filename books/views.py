@@ -1,3 +1,5 @@
+from django.http import Http404
+from django.http import HttpResponse
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth import (
@@ -27,6 +29,11 @@ from books.forms import SignUpForm
 #def index(request):
  #   return HttpResponse("Hello")
 
+def main(request):
+    return render(request, 'main.html')
+
+def about(request):
+    return render(request, 'about.html')
 
 def index(request):
     return render(request, 'home.html')
