@@ -1,0 +1,26 @@
+echo "Tworzenie katalogow..."
+mkdir katalog11 katalog22
+
+echo "Dodawanie plikow tekstowych z zawartoscia do katalogu zrodlowego..."
+echo "some file1 content" > ./katalog11/plik1.txt
+echo "some file2 content" > ./katalog11/plik2.txt
+
+echo "Tworzenie podkatalogow w katalogu zrodlowym..."
+mkdir ./katalog11/katalog11_A ./katalog11/katalog11_B
+
+echo "Dodawanie pliku tekstowego do podkatalogu..."
+echo "some file3 content" > ./katalog11/katalog11_A/plik3.txt
+
+echo "Kopiowanie duzego pliku..."
+cp DuzyPlik.bin ./katalog11
+
+echo "Uruchamianie demona..."
+timeout 10 ./exc katalog11 katalog22 &
+
+echo "Demon uruchomiony pomyslnie. Wysylanie sygnalu SIGUSR1..."
+killall -USR1 exc
+
+echo "Sygnal wyslany pomyslnie. Rozpoczecie rekurencyjnej synchronizacji katalogow..."
+timeout 10 ./exc katalog11 katalog22 -R
+
+echo "Synchronizacja zakonczona. Testowanie zakonczone."
