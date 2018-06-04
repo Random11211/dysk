@@ -14,6 +14,7 @@ body {
 .fill_dock {
     position: fixed;
     background-color: yellow;
+    overflow: scroll;
     left: 20%;
     top: 10%;
     width: 80%;
@@ -66,7 +67,13 @@ body {
     list-style-type: none;
 }
 
+.file > li {
+    display: block;
+    float: left;
+}
+
 .file {
     list-style-type: none;
+    display: contents;
     width: inherit;
 }

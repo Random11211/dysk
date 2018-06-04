@@ -15,6 +15,7 @@ from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url, urlsafe_base64_decode
 from django.shortcuts import render
 from books.models import Plik
+from books.forms import UploadFileForm
 from books.models import Konto
 from books.models import get_user_model
 from django.contrib.auth import authenticate
@@ -25,23 +26,6 @@ from django.shortcuts import render, redirect
 # Create your views here.
 
 def simple_upload(request):
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        return render(request, 'storage_control.html', {'uploaded_file_url': uploaded_file_url})
-    return render(request, 'storage_control.html')
-
-
-
-def index(request):
-    return render(request, 'home.html')
-
-
-def storage_control(request):
-    #plik = Plik.objects.create(adres="adres", nazwa="pliczek")
-    #plik.save()
     context_dict = {}
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
@@ -52,6 +36,24 @@ def storage_control(request):
     lista = Plik.objects.all()
     context_dict["file"] = lista
 
+    return render(request, 'storage_control.html', context_dict)
+
+
+def index(request):
+    return render(request, 'home.html')
+
+
+def storage_control(request):
+    #Plik.objects.all().delete()
+    context_dict = {}
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    form = UploadFileForm()
+    context_dict["form"] = form
+    lista = Plik.objects.all()
+    context_dict["file"] = lista
     return render(request, 'storage_control.html', context_dict)
 
 

@@ -4,7 +4,7 @@ from django.db import models
 
 class Plik(models.Model):
     nazwa = models.CharField(max_length=50)
-    adres = models.TextField()
+    adres = models.FileField(upload_to='media/')
     czy_udostepniony = models.BooleanField(default=False)
 
 

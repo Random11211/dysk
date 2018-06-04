@@ -10,7 +10,7 @@
     <ul class="menu_items">
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="file" name="myfile">
+            {{ form.as_p }}
             <button type="submit">Upload</button>
         </form>
         <li>Add file</li>
@@ -33,8 +33,8 @@
 
     {% for i in file %}
         <ul class="file">
-            <li class="file_name">{{ i.nazwa }}</li>
-            <li class="file_size">{{ i.adres }}</li>
+            <a href="{{ i.adres.url }}"><li class="file_name">{{ i.nazwa }}</li></a>
+            <li class="file_size">{{ i.adres.size }}</li>
             <li class="file_shared">{{ i.czy_udostepniony }}</li>
         </ul>
         <hr><hr>
