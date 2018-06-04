@@ -6,20 +6,25 @@ from django.contrib.auth import (
     logout as auth_logout, update_session_auth_hash,
 )
 from django.contrib.auth.forms import (
-    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 )
+
+from django.core.mail import send_mail
+from django.conf import settings
+
 from django.contrib.sites.shortcuts import get_current_site
-from django.http import HttpResponseRedirect, QueryDict
+from django.http import BadHeaderError, HttpResponse, HttpResponseRedirect
+
 from django.shortcuts import resolve_url
 from django.template.response import TemplateResponse
-from django.utils.http import is_safe_url, urlsafe_base64_decode
-from django.shortcuts import render
+from django.utils.http import is_safe_url
 from books.models import Plik
 from books.forms import UploadFileForm
 from books.models import Konto
 from books.models import get_user_model
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+
 from django.shortcuts import render, redirect
 
 
@@ -38,6 +43,8 @@ def simple_upload(request):
 
     return render(request, 'storage_control.html', context_dict)
 
+from django.contrib.auth import authenticate
+from books.forms import SignUpForm
 
 def index(request):
     return render(request, 'home.html')
@@ -63,16 +70,16 @@ def cloud_menu(request):
 
 def registration(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return redirect('storage_control.html')
+            return redirect('login')
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
     return render(request, 'registration.html', {'form': form})
 
 
@@ -86,7 +93,6 @@ def login(request,template_name='login.html',
     if request.method == "POST":
         form = authentication_form(request, data=request.POST)
         if form.is_valid():
-
 
             # Ensure the user-originating redirection url is safe.
             if not is_safe_url(url=redirect_to, host=request.get_host()):
@@ -114,3 +120,5 @@ def login(request,template_name='login.html',
         request.current_app = current_app
 
     return TemplateResponse(request, template_name, context)
+
+
