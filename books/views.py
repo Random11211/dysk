@@ -119,7 +119,7 @@ def login(request,template_name='login.html',
             # Okay, security check complete. Log the user in.
             auth_login(request, form.get_user())
 
-            return redirect('../storage_control', context_dict)
+            return redirect('../main')
     else:
         form = authentication_form(request)
 
