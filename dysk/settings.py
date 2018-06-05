@@ -22,9 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'qsl-1rrf-bc71w^j376gb6^9%4x8efp3&&h=7vm648v&(im=yd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DEBUG = False
+#na serwerze potem zmienić na adres naszej strony internetowej!
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -129,6 +129,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 LOGOUT_REDIRECT_URL = '../main'
 
-DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
