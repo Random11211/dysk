@@ -11,6 +11,5 @@ urlpatterns = (
      path('storage_control/', views.storage_control),
      path('main/', views.main),
      path('about/', views.about),
-     path('storage_control/', views.storage_control),
      url('^', include('django.contrib.auth.urls'))
 )

@@ -1,7 +1,6 @@
 from django.http import Http404
 from django.http import HttpResponse
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib.auth import (
     REDIRECT_FIELD_NAME, get_user_model, login as auth_login,
@@ -64,7 +63,7 @@ def index(request):
 
 
 def storage_control(request):
-    #Plik.objects.all().delete()
+    Plik.objects.all().delete()
     context_dict = {}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -78,7 +77,7 @@ def storage_control(request):
 
 
 def cloud_menu(request):
-    return redirect(request,  'storage_control.html')
+    return redirect(request, 'storage_control.html')
 
 
 def registration(request):
@@ -96,7 +95,8 @@ def registration(request):
     return render(request, 'registration.html', {'form': form})
 
 
-def login(request,template_name='login.html',
+def login(request,
+          template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
@@ -108,13 +108,13 @@ def login(request,template_name='login.html',
         if form.is_valid():
 
             # Ensure the user-originating redirection url is safe.
-            if not is_safe_url(url=redirect_to, host=request.get_host()):
-                redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
+            #if not is_safe_url(url=redirect_to, host=request.get_host()):
+            #    redirect_to = resolve_url(settings.LOGIN_REDIRECT_URL)
 
             # Okay, security check complete. Log the user in.
             auth_login(request, form.get_user())
 
-            return redirect('../storage_control')
+            return redirect('../main')
     else:
         form = authentication_form(request)
 
