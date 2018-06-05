@@ -1,7 +1,10 @@
 from django.urls import path, include
 from django.conf.urls import url
+
+from dysk import settings
 from . import views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import logout
 
 urlpatterns = (
      path('', views.index),
@@ -12,5 +15,6 @@ urlpatterns = (
      path('main/', views.main),
      path('about/', views.about),
      path('storage_control/', views.storage_control),
-     url('^', include('django.contrib.auth.urls'))
+     url('^', include('django.contrib.auth.urls')),
+     url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout')
 )
