@@ -1,4 +1,6 @@
 from django.http import Http404
+from django.contrib.auth import authenticate
+from books.forms import SignUpForm
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -24,29 +26,11 @@ from books.models import Plik
 from books.forms import UploadFileForm
 from books.models import Konto
 from books.models import get_user_model
-from django.contrib.auth import authenticate
+from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 from django.shortcuts import render, redirect
 
-
-# Create your views here.
-
-def simple_upload(request):
-    context_dict = {}
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        context_dict['uploaded_file_url'] = uploaded_file_url
-    lista = Plik.objects.all()
-    context_dict["file"] = lista
-
-    return render(request, 'storage_control.html', context_dict)
-
-from django.contrib.auth import authenticate
-from books.forms import SignUpForm
 
 # Create your views here.
 
@@ -63,17 +47,35 @@ def index(request):
     return render(request, 'home.html')
 
 
+def file_uploadable(pojemnosc, file_size):
+    pliki = Plik.objects.all()
+    size = 0
+    for i in pliki:
+        size += i.adres.size
+    if size + file_size <= pojemnosc:
+        return True
+    return False
+
+
+
 def storage_control(request):
     #Plik.objects.all().delete()
     context_dict = {}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            if file_uploadable(5000000, form.__sizeof__()):
+                form.save()
     form = UploadFileForm()
+    use = request.user
     context_dict["form"] = form
     lista = Plik.objects.all()
     context_dict["file"] = lista
+    context_dict["use"] = use
+    user = User.objects.get(username=use.username)
+    konto = Konto.objects.get(uzytkownik=user)
+    context_dict["konto"] = konto
+    context_dict["user"] = user
     return render(request, 'storage_control.html', context_dict)
 
 
@@ -90,6 +92,8 @@ def registration(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
+            konto = Konto.objects.create(pojemnosc=50000, uzytkownik=user)
+            konto.save()
             return redirect('login')
     else:
         form = SignUpForm()
@@ -103,6 +107,7 @@ def login(request,template_name='login.html',
     redirect_to = request.POST.get(redirect_field_name,
                                    request.GET.get(redirect_field_name, ''))
 
+    context_dict = {}
     if request.method == "POST":
         form = authentication_form(request, data=request.POST)
         if form.is_valid():
@@ -114,7 +119,7 @@ def login(request,template_name='login.html',
             # Okay, security check complete. Log the user in.
             auth_login(request, form.get_user())
 
-            return redirect('../storage_control')
+            return redirect('../storage_control', context_dict)
     else:
         form = authentication_form(request)
 

@@ -3,7 +3,12 @@
 {% load static %}
 
 {% block menu_bar %}
-
+    <div class="user">
+        <p>{{ use.get_username }}</p>
+        <p>{{ konto.konto }}</p>
+        <p>{{ konto.pojemnosc }}</p>
+        <p>{{ konto.uzytkownik }}</p>
+    </div>
 {% endblock %}
 
 {% block left_bar %}
@@ -15,17 +20,14 @@
         </form>
         <li>Add file</li>
         <li>Add directory</li>
-    {% if uploaded_file_url %}
-        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a> </p>
-    {% endif %}
     </ul>
 {% endblock %}
 
 {% block files_list %}
         <ul class="table_description">
-            <li class="file_name" role="presentation">Nazwa</li>
-            <li class="file_size" role="presentation">Rozmiar pliku</li>
-            <li class="file_shared" role="presentation">Udostepniony</li>
+            <li class="file_name">Nazwa</li>
+            <li class="file_size">Rozmiar pliku</li>
+            <li class="file_shared">Udostepniony</li>
         </ul>
     <hr>
 
@@ -34,7 +36,8 @@
     {% for i in file %}
         <ul class="file">
             <a href="{{ i.adres.url }}"><li class="file_name">{{ i.nazwa }}</li></a>
-            <li class="file_size">{{ i.adres.size }}</li>
+            <!--<li class="file_name">{{ i.nazwa }}</li>-->
+            <li class="file_size">{{ i.adres.size }} B</li>
             <li class="file_shared">{{ i.czy_udostepniony }}</li>
         </ul>
         <hr><hr>

@@ -12,5 +12,6 @@ urlpatterns = (
      path('main/', views.main),
      path('about/', views.about),
      path('storage_control/', views.storage_control),
+     url('^site_control/(\d+)/$', views.storage_control),
      url('^', include('django.contrib.auth.urls'))
 )
