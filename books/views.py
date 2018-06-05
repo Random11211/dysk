@@ -1,6 +1,4 @@
 from django.http import Http404
-from django.contrib.auth import authenticate
-from books.forms import SignUpForm
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -34,6 +32,24 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 
+def simple_upload(request):
+    context_dict = {}
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_file_url = fs.url(filename)
+        context_dict['uploaded_file_url'] = uploaded_file_url
+    lista = Plik.objects.all()
+    context_dict["file"] = lista
+
+    return render(request, 'storage_control.html', context_dict)
+
+from django.contrib.auth import authenticate
+from books.forms import SignUpForm
+
+# Create your views here.
+
 #def index(request):
  #   return HttpResponse("Hello")
 
@@ -59,7 +75,7 @@ def file_uploadable(pojemnosc, file_size):
 
 
 def storage_control(request):
-    #Plik.objects.all().delete()
+    # Plik.objects.all().delete()
     context_dict = {}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -80,7 +96,7 @@ def storage_control(request):
 
 
 def cloud_menu(request):
-    return redirect(request,  'storage_control.html')
+    return redirect(request, 'storage_control.html')
 
 
 def registration(request):
@@ -100,14 +116,13 @@ def registration(request):
     return render(request, 'registration.html', {'form': form})
 
 
-def login(request,template_name='login.html',
+def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
     redirect_to = request.POST.get(redirect_field_name,
                                    request.GET.get(redirect_field_name, ''))
 
-    context_dict = {}
     if request.method == "POST":
         form = authentication_form(request, data=request.POST)
         if form.is_valid():
@@ -138,3 +153,9 @@ def login(request,template_name='login.html',
         request.current_app = current_app
 
     return TemplateResponse(request, template_name, context)
+
+
+def error_404_view(request, exception):
+    data = {}
+    return render(request, 'error_404.html', data)
+
