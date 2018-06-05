@@ -45,26 +45,30 @@ def simple_upload(request):
 
     return render(request, 'storage_control.html', context_dict)
 
+
 from django.contrib.auth import authenticate
 from books.forms import SignUpForm
 
+
 # Create your views here.
 
-#def index(request):
- #   return HttpResponse("Hello")
+# def index(request):
+#   return HttpResponse("Hello")
 
 def main(request):
     return render(request, 'main.html')
 
+
 def about(request):
     return render(request, 'about.html')
+
 
 def index(request):
     return render(request, 'home.html')
 
 
 def storage_control(request):
-    #Plik.objects.all().delete()
+    # Plik.objects.all().delete()
     context_dict = {}
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -78,7 +82,7 @@ def storage_control(request):
 
 
 def cloud_menu(request):
-    return redirect(request,  'storage_control.html')
+    return redirect(request, 'storage_control.html')
 
 
 def registration(request):
@@ -96,7 +100,7 @@ def registration(request):
     return render(request, 'registration.html', {'form': form})
 
 
-def login(request,template_name='login.html',
+def login(request, template_name='login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
           authentication_form=AuthenticationForm,
           current_app=None, extra_context=None):
@@ -133,3 +137,9 @@ def login(request,template_name='login.html',
         request.current_app = current_app
 
     return TemplateResponse(request, template_name, context)
+
+
+def error_404_view(request, exception):
+    data = {}
+    return render(request, 'error_404.html', data)
+
