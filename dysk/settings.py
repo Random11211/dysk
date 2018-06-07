@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'qsl-1rrf-bc71w^j376gb6^9%4x8efp3&&h=7vm648v&(im=yd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 #na serwerze potem zmienić na adres naszej strony internetowej!
 ALLOWED_HOSTS = ["*"]
 

@@ -143,3 +143,9 @@ def error_404_view(request, exception):
     data = {}
     return render(request, 'error_404.html', data)
 
+
+def error_500_view(request):
+    data = {}
+    return render(request, 'error_500.html', data)
+
+
