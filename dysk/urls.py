@@ -17,10 +17,12 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from django.conf import settings
+from books import views
 
 urlpatterns = [
     path('', include('books.urls')),
     path('admin/', admin.site.urls),
+    path('^storage_cotrol/<int:id>/download/', views.file_available, name='file_available'),
 ]
 
 handler404 = 'books.views.error_404_view'

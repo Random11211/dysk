@@ -21,6 +21,8 @@ from django.shortcuts import resolve_url
 from django.template.response import TemplateResponse
 from django.utils.http import is_safe_url
 from books.models import Plik
+from books.models import Struktura_Konta
+from books.models import Katalog
 from books.forms import UploadFileForm
 from books.models import Konto
 from books.models import get_user_model
@@ -28,23 +30,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
 from django.shortcuts import render, redirect
-
-
-# Create your views here.
-
-def simple_upload(request):
-    context_dict = {}
-    if request.method == 'POST' and request.FILES['myfile']:
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_file_url = fs.url(filename)
-        context_dict['uploaded_file_url'] = uploaded_file_url
-    lista = Plik.objects.all()
-    context_dict["file"] = lista
-
-    return render(request, 'storage_control.html', context_dict)
-
 from django.contrib.auth import authenticate
 from books.forms import SignUpForm
 
@@ -72,6 +57,9 @@ def file_uploadable(pojemnosc, file_size):
         return True
     return False
 
+
+def file_available(request, file_id):
+    return HttpResponse("You want file %s." % file_id)
 
 
 def storage_control(request):
@@ -108,8 +96,10 @@ def registration(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            konto = Konto.objects.create(pojemnosc=50000, uzytkownik=user)
-            konto.save()
+
+            Konto.objects.create(pojemnosc=50000, uzytkownik=user)
+            Struktura_Konta.objects.create(konto=Konto.objects.get(uzytkownik=user))
+
             return redirect('login')
     else:
         form = SignUpForm()
