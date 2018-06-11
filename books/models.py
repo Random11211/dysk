@@ -9,6 +9,8 @@ class Plik(models.Model):
 
 
 class Katalog(models.Model):
+    id = models.IntegerField(primary_key=True)
+    nazwa = models.CharField(max_length=50)
     lista_plikow = models.ManyToManyField(Plik)
 
 

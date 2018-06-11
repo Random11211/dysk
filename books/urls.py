@@ -15,7 +15,12 @@ urlpatterns = (
      path('main/', views.main),
      path('about/', views.about),
      path('storage_control/', views.storage_control),
+     #path('^storage_control/<int:id>/$', views.file_available, name='file_avaliable'),
+     url('^storage_control/(\d+)/$', views.file_available),
+     url('^(\d+)/$', views.file_available),
      url('^', include('django.contrib.auth.urls')),
+     url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
+     url('^', include('django.contrib.auth.urls'))
      url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
      url('test_error/', views.test_error)
 )
