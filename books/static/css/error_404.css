@@ -1,0 +1,23 @@
+body {
+    background-color: white;
+    background-image: url("sadness.png");
+    background-repeat: no-repeat;
+    background-position: left;
+}
+
+img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+}
+
+
+
+.error_page{
+
+}
+
+.button {
+    color: DodgerBlue;
+}

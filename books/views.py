@@ -149,3 +149,5 @@ def error_500_view(request):
     return render(request, 'error_500.html', data)
 
 
+def test_error(request):
+    return render(request, 'test_site_error.html')
