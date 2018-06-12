@@ -45,6 +45,7 @@ def about(request):
     return render(request, 'about.html')
 
 def index(request):
+    #User.objects.all().delete()
     return render(request, 'home.html')
 
 
@@ -154,6 +155,3 @@ def error_500_view(request):
     data = {}
     return render(request, 'error_500.html', data)
 
-
-def test_error(request):
-    return render(request, 'test_site_error.html')

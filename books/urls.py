@@ -20,7 +20,4 @@ urlpatterns = (
      url('^(\d+)/$', views.file_available),
      url('^', include('django.contrib.auth.urls')),
      url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
-     url('^', include('django.contrib.auth.urls'))
-     url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
-     url('test_error/', views.test_error)
 )
