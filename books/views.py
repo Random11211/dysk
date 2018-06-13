@@ -49,6 +49,23 @@ def index(request):
     return render(request, 'home.html')
 
 
+def AddKatalog():
+    return
+
+
+def UserFiles(konto: Konto):
+
+    return Plik.objects.all()
+
+
+def left_space(konto: Konto):
+    pliki = Plik.objects.all()
+    size = 0
+    for i in pliki:
+        size += i.adres.size
+    return konto.pojemnosc - size
+
+
 def file_uploadable(pojemnosc, file_size):
     pliki = Plik.objects.all()
     size = 0
@@ -63,6 +80,26 @@ def file_available(request, file_id):
     return HttpResponse("You want file %s." % file_id)
 
 
+def NameIsFree(name):
+    return Plik.objects.filter(nazwa=name).exists()
+
+
+def SizePresentation(pojemnosc):
+    return True
+
+
+def remove(request, file_id):
+    return HttpResponse("You want to remove file %s." %file_id)
+
+
+def rename(request, file_id):
+    return HttpResponse("You want to rename file %s." %file_id)
+
+
+def move(request, file_id):
+    return HttpResponse("You want to move file %s." %file_id)
+
+
 def storage_control(request):
     # Plik.objects.all().delete()
     context_dict = {}
@@ -70,16 +107,18 @@ def storage_control(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             if file_uploadable(5000000, form.__sizeof__()):
-                form.save()
+                if not NameIsFree(form.data['nazwa']):
+                    form.save()
     form = UploadFileForm()
     use = request.user
     context_dict["form"] = form
-    lista = Plik.objects.all()
-    context_dict["file"] = lista
     context_dict["use"] = use
     user = User.objects.get(username=use.username)
     konto = Konto.objects.get(uzytkownik=user)
+    lista = UserFiles(konto)
     context_dict["konto"] = konto
+    context_dict["file"] = lista
+    context_dict["pozostalo"] = left_space(konto)
     context_dict["user"] = user
     return render(request, 'storage_control.html', context_dict)
 
@@ -98,7 +137,7 @@ def registration(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
-            Konto.objects.create(pojemnosc=50000, uzytkownik=user)
+            Konto.objects.create(pojemnosc=500000000, uzytkownik=user)
             Struktura_Konta.objects.create(konto=Konto.objects.get(uzytkownik=user))
 
             return redirect('login')

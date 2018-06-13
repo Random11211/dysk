@@ -22,7 +22,6 @@ from books import views
 urlpatterns = [
     path('', include('books.urls')),
     path('admin/', admin.site.urls),
-    path('^storage_cotrol/<int:id>/download/', views.file_available, name='file_available'),
 ]
 
 handler404 = 'books.views.error_404_view'

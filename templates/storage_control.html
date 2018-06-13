@@ -3,11 +3,12 @@
 {% load static %}
 
 {% block menu_bar %}
+    <div class="go_back">
+        <a href="../main"><button>Wroc</button></a>
+    </div>
+
     <div class="user">
-        <p>{{ use.get_username }}</p>
-        <p>{{ konto.konto }}</p>
-        <p>{{ konto.pojemnosc }}</p>
-        <p>{{ konto.uzytkownik }}</p>
+        <p>Hello, {{ use.get_username }}</p>
     </div>
 {% endblock %}
 
@@ -21,6 +22,11 @@
         <li>Add file</li>
         <li>Add directory</li>
     </ul>
+
+    <div class="account_info">
+        <p>Pojemnosc konta: {{ konto.pojemnosc }} B</p>
+        <p>Pozostalo: {{ pozostalo }} B</p>
+    </div>
 {% endblock %}
 
 {% block files_list %}
@@ -36,11 +42,14 @@
     {% for i in file %}
         <ul class="file">
             <a href="{{ i.adres.url }}"><li class="file_name">{{ i.nazwa }}</li></a>
-            <!--<li class="file_name">{{ i.nazwa }}</li>-->
             <li class="file_size">{{ i.adres.size }} B</li>
             <li class="file_shared">{{ i.czy_udostepniony }}</li>
-        </ul>
-        <hr><hr>
+            <li class="eventButton"><a href="/remove/{{ i.id }}">Remove</a></li>
+            <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>
+            <li class="eventButton"><a href="/edit/{{ i.id }}">Edit</a></li>
+            <li class="eventButton"><a href="/move/{{ i.id }}">Move</a></li>
+            </ul>
+        <hr>
     {% endfor %}
 
     </div>

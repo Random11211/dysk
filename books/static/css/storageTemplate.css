@@ -11,6 +11,8 @@ body {
     background-color: greenyellow;
 }
 
+
+
 .fill_dock {
     position: fixed;
     background-color: yellow;
@@ -82,9 +84,23 @@ body {
     list-style-type: none;
     display: block;
     width: 100%;
+    height: 20px;
 }
 
 .file > a {
     width: 60%;
     float: left;
+}
+
+.eventButton {
+    width: 10%;
+    display: table-cell;
+    float: left;
+    background-color: black;
+}
+
+.eventButton > a {
+    width: 20%;
+    text-decoration: none;
+
 }

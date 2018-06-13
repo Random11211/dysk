@@ -3,6 +3,7 @@ from django.db import models
 
 
 class Plik(models.Model):
+    id = models.IntegerField(primary_key=True)
     nazwa = models.CharField(max_length=50)
     adres = models.FileField(upload_to='media/')
     czy_udostepniony = models.BooleanField(default=False)
