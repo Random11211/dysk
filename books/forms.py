@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from books.models import Plik
+from books.models import Plik, Katalog
 
 
 class SignUpForm(UserCreationForm):
@@ -18,4 +18,10 @@ class UploadFileForm(forms.ModelForm):
     class Meta:
         model = Plik
         fields = ('nazwa', 'adres')
+
+
+class NewDirectory(forms.ModelForm):
+    class Meta:
+        model = Katalog
+        fields = ('nazwa',)
 

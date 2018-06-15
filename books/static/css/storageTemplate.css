@@ -102,5 +102,11 @@ body {
 .eventButton > a {
     width: 20%;
     text-decoration: none;
+}
 
+.folder_list {
+    max-height: 300px;
+    margin: 50px;
+    width: 80%;
+    overflow-y: auto;
 }

@@ -13,19 +13,22 @@
 {% endblock %}
 
 {% block left_bar %}
-    <ul class="menu_items">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Upload</button>
-        </form>
-        <li>Add file</li>
-        <li>Add directory</li>
+    <p class="menu_items">
+        <a href="/storage_control/file_upload">Add File</a>
+        <a href="/storage_control/directory_create">Add Directory</a>
+        <p>{{ request.session.current_directory }}</p>
+        <p>{{ request.session.current_id }}</p>
     </ul>
 
     <div class="account_info">
         <p>Pojemnosc konta: {{ konto.pojemnosc }} B</p>
         <p>Pozostalo: {{ pozostalo }} B</p>
+    </div>
+
+    <div class="folder_list">
+        {% for i in katalogi.lista_katalogow.all %}
+            <a href="/directory/{{ i.id }}">{{ i.nazwa }}</a>
+        {% endfor %}
     </div>
 {% endblock %}
 
@@ -48,7 +51,7 @@
             <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>
             <li class="eventButton"><a href="/edit/{{ i.id }}">Edit</a></li>
             <li class="eventButton"><a href="/move/{{ i.id }}">Move</a></li>
-            </ul>
+        </ul>
         <hr>
     {% endfor %}
 

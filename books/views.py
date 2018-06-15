@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.http import HttpResponse
 from django.conf import settings
+from django.contrib.sessions.models import Session
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
 from django.contrib.auth import (
@@ -23,7 +24,7 @@ from django.utils.http import is_safe_url
 from books.models import Plik
 from books.models import Struktura_Konta
 from books.models import Katalog
-from books.forms import UploadFileForm
+from books.forms import UploadFileForm, NewDirectory
 from books.models import Konto
 from books.models import get_user_model
 from django.contrib.auth.models import User
@@ -35,9 +36,6 @@ from books.forms import SignUpForm
 
 # Create your views here.
 
-#def index(request):
- #   return HttpResponse("Hello")
-
 def main(request):
     return render(request, 'main.html')
 
@@ -45,39 +43,39 @@ def about(request):
     return render(request, 'about.html')
 
 def index(request):
+    #czyszczenie bazy danych, odkomentowac tylko w razie koniecznosci
+
+    #Plik.objects.all().delete()
+    #Katalog.objects.all().delete()
     #User.objects.all().delete()
+    #Struktura_Konta.objects.all().delete()
+
     return render(request, 'home.html')
 
 
-def AddKatalog():
-    return
+def currentAccount(user):
+    return Konto.objects.get(uzytkownik=user)
 
 
-def UserFiles(konto: Konto):
-
-    return Plik.objects.all()
-
-
-def left_space(konto: Konto):
-    pliki = Plik.objects.all()
-    size = 0
-    for i in pliki:
-        size += i.adres.size
-    return konto.pojemnosc - size
-
-
-def file_uploadable(pojemnosc, file_size):
-    pliki = Plik.objects.all()
-    size = 0
-    for i in pliki:
-        size += i.adres.size
-    if size + file_size <= pojemnosc:
+def file_uploadable(konto : Konto, file_size):
+    if left_space(konto) + file_size >= 0:
         return True
     return False
 
 
-def file_available(request, file_id):
-    return HttpResponse("You want file %s." % file_id)
+def UserFiles(konto: Konto, katalog):
+    pliki = Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(nazwa=katalog).lista_plikow.all()
+    return pliki
+
+
+def left_space(konto: Konto):
+    katalogi = Struktura_Konta.objects.get(konto=konto).lista_katalogow.all()
+    size = 0
+    for i in katalogi:
+        pliki = i.lista_plikow.all()
+        for j in pliki:
+            size += j.adres.size
+    return konto.pojemnosc - size
 
 
 def NameIsFree(name):
@@ -86,6 +84,49 @@ def NameIsFree(name):
 
 def SizePresentation(pojemnosc):
     return True
+
+
+def CatalogFree(konto: Konto, name):
+    return Struktura_Konta.objects.get(konto=konto).lista_katalogow.filter(nazwa=name).exists()
+
+
+def file_available(request, file_id):
+    return HttpResponse("You want file %s." % file_id)
+
+
+def directory_create(request):
+    context_dict = {}
+    konto = currentAccount(request.user)
+    if request.method == 'POST' and 'directory' in request.POST:
+        form = NewDirectory(request.POST)
+        if form.is_valid():
+            if not CatalogFree(konto, form.data['nazwa']):
+                form.save()
+                katalog = Katalog.objects.last()
+                Struktura_Konta.objects.get(konto=konto).lista_katalogow.add(katalog)
+                return redirect('/storage_control/')
+
+    form = NewDirectory()
+    context_dict["form"] = form
+    return render(request, 'directory_create.html', context_dict)
+
+
+def file_upload(request):
+    context_dict = {}
+    konto = currentAccount(request.user)
+    id = request.session['current_id']
+    katalog = Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(id=id)
+    if request.method == 'POST' and 'file' in request.POST:
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            if file_uploadable(konto, form.__sizeof__()):
+                if not NameIsFree(form.data['nazwa']):
+                    form.save()
+                    katalog.lista_plikow.add(Plik.objects.last())
+                    return redirect('/storage_control/')
+    form = UploadFileForm()
+    context_dict["form"] = form
+    return render(request, 'file_upload.html', context_dict)
 
 
 def remove(request, file_id):
@@ -100,26 +141,31 @@ def move(request, file_id):
     return HttpResponse("You want to move file %s." %file_id)
 
 
+def change_directory(request, directory_id):
+    katalog = Struktura_Konta.objects.get(konto=currentAccount(request.user)).lista_katalogow.get(id=directory_id)
+    request.session['current_id'] = katalog.id
+    request.session['current_directory'] = katalog.nazwa
+    return redirect('/storage_control/')
+
 def storage_control(request):
-    # Plik.objects.all().delete()
     context_dict = {}
-    if request.method == 'POST':
-        form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            if file_uploadable(5000000, form.__sizeof__()):
-                if not NameIsFree(form.data['nazwa']):
-                    form.save()
-    form = UploadFileForm()
     use = request.user
-    context_dict["form"] = form
     context_dict["use"] = use
-    user = User.objects.get(username=use.username)
-    konto = Konto.objects.get(uzytkownik=user)
-    lista = UserFiles(konto)
+    user = User.objects.get(username=request.user)
+    konto = currentAccount(user)
+    if request.session.get('current_directory', None) is None:
+        katalog = Struktura_Konta.objects.get(konto=konto).lista_katalogow.first()
+        request.session['current_id'] = katalog.id
+        request.session['current_directory'] = katalog.nazwa
+    lista = UserFiles(konto, request.session['current_directory'])
     context_dict["konto"] = konto
     context_dict["file"] = lista
     context_dict["pozostalo"] = left_space(konto)
     context_dict["user"] = user
+    context_dict["katalogi"] = Struktura_Konta.objects.get(konto=konto)
+    #request.session['current_directory'] = None
+    #import pdb; pdb.set_trace()
+
     return render(request, 'storage_control.html', context_dict)
 
 
@@ -139,6 +185,10 @@ def registration(request):
 
             Konto.objects.create(pojemnosc=500000000, uzytkownik=user)
             Struktura_Konta.objects.create(konto=Konto.objects.get(uzytkownik=user))
+            struktura = Struktura_Konta.objects.get(konto=Konto.objects.get(uzytkownik=user))
+            Katalog.objects.create(nazwa="folder")
+            katalog = Katalog.objects.last()
+            struktura.lista_katalogow.add(katalog)
 
             return redirect('login')
     else:
