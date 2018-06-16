@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/error_404.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registrationStyle.css' %}">
+    <title>Error 500</title>
+</head>
+<body>
+
+<div class="error_page_500">
+
+</div>
+
+<div class="bt">
+
+    <h1> Awww...Don't Cry.</h1>
+
+    <h3> It's a 500 Error! </h3>
+
+    <h4> It's an Internal Server Error. </h4>
+
+
+    <button class="mybutton" onclick="goBack()" >Go Back</button>
+
+        <script>
+        function goBack() {
+            window.history.back();
+        }
+        </script>
+
+</div>
+
+</body>
+
+</html>

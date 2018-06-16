@@ -3,29 +3,40 @@
 {% load static %}
 
 {% block menu_bar %}
+    <div class="go_back">
+        <a href="../main"><button>Wroc</button></a>
+    </div>
 
+    <div class="user">
+        <p>Hello, {{ use.get_username }}</p>
+    </div>
 {% endblock %}
 
 {% block left_bar %}
-    <ul class="menu_items">
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Upload</button>
-        </form>
-        <li>Add file</li>
-        <li>Add directory</li>
-    {% if uploaded_file_url %}
-        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a> </p>
-    {% endif %}
+    <p class="menu_items">
+        <a href="/storage_control/file_upload">Add File</a>
+        <a href="/storage_control/directory_create">Add Directory</a>
+        <p>{{ request.session.current_directory }}</p>
+        <p>{{ request.session.current_id }}</p>
     </ul>
+
+    <div class="account_info">
+        <p>Pojemnosc konta: {{ konto.pojemnosc }} B</p>
+        <p>Pozostalo: {{ pozostalo }} B</p>
+    </div>
+
+    <div class="folder_list">
+        {% for i in katalogi.lista_katalogow.all %}
+            <a href="/directory/{{ i.id }}">{{ i.nazwa }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}
 
 {% block files_list %}
         <ul class="table_description">
-            <li class="file_name" role="presentation">Nazwa</li>
-            <li class="file_size" role="presentation">Rozmiar pliku</li>
-            <li class="file_shared" role="presentation">Udostepniony</li>
+            <li class="file_name">Nazwa</li>
+            <li class="file_size">Rozmiar pliku</li>
+            <li class="file_shared">Udostepniony</li>
         </ul>
     <hr>
 
@@ -34,10 +45,14 @@
     {% for i in file %}
         <ul class="file">
             <a href="{{ i.adres.url }}"><li class="file_name">{{ i.nazwa }}</li></a>
-            <li class="file_size">{{ i.adres.size }}</li>
+            <li class="file_size">{{ i.adres.size }} B</li>
             <li class="file_shared">{{ i.czy_udostepniony }}</li>
+            <li class="eventButton"><a href="/remove/{{ i.id }}">Remove</a></li>
+            <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>
+            <li class="eventButton"><a href="/edit/{{ i.id }}">Edit</a></li>
+            <li class="eventButton"><a href="/move/{{ i.id }}">Move</a></li>
         </ul>
-        <hr><hr>
+        <hr>
     {% endfor %}
 
     </div>

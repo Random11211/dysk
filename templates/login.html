@@ -3,6 +3,7 @@
 {% load staticfiles %}
 
 {% block user_control %}
+    <title>Sign in</title>
     <h2>Service login</h2>
     <form method="post">
         {% csrf_token %}
@@ -11,7 +12,14 @@
             <a href=".."><button class="mybutton" type="submit">Sign in</button></a>
         </div>
 
-        <a href="../password_reset/" style="color: #228B22">Forgot password?</a>
+        <div style="margin-top:20px;">
+             <a href="../password_reset/" style="color: #1E90FF">Forgot password?</a>
+        </div>
+
+        <div style="margin-top:5px;">
+            <i>New to Storage Solutions?</i>
+            <a href="../registration/" style="color: #1E90FF"> Create an account</a>
+        </div>
 
     </form>
 

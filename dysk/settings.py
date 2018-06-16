@@ -23,8 +23,8 @@ SECRET_KEY = 'qsl-1rrf-bc71w^j376gb6^9%4x8efp3&&h=7vm648v&(im=yd'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = []
+#na serwerze potem zmienić na adres naszej strony internetowej!
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -126,3 +126,7 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+LOGOUT_REDIRECT_URL = '../main'
+
+

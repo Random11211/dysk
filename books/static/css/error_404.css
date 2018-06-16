@@ -1,0 +1,39 @@
+.error_page_404{
+    background: white url("sadness.png") no-repeat bottom;
+    background-size: 100%;
+    width: 800px;
+    height: 800px;
+    position: fixed;
+    top: 10%;
+    left: 10%;
+}
+
+.error_page_500{
+    background: white url("sadness2.jpg") no-repeat bottom;
+    background-size: 100%;
+    width: 800px;
+    height: 800px;
+    position: fixed;
+    top: 10%;
+    left: 10%;
+}
+
+.bt{
+    position: fixed;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 60%;
+    font-family: "Times New Roman";
+}
+
+.bt > h1 {
+    margin: 60px;
+}
+
+.bt > h3 {
+    margin: 30px;
+}
+
+.bt > h4 {
+    margin-bottom: 30px;
+}
