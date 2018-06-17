@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import logout
 
 urlpatterns = (
-     path('', views.index),
+     path('', views.main),
      path('login/', views.login),
      path('registration/', views.registration),
      path('cloud_menu/', views.cloud_menu),
