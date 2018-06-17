@@ -15,6 +15,7 @@ urlpatterns = (
      path('about/', views.about),
      path('storage_control/directory_create/', views.directory_create),
      path('storage_control/file_upload', views.file_upload),
+     path('paste/', views.paste),
      url('directory/(\d+)/$', views.change_directory),
      url('^(\d+)/$', views.file_available),
      url('remove/(\d+)/$', views.remove),
