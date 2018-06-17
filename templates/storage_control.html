@@ -16,7 +16,9 @@
     <ul class="menu_items">
         <li><a href="/storage_control/file_upload">Add File</a></li>
         <li><a href="/storage_control/directory_create">Add Directory</a></li>
-        <li><a href="/paste/">Paste file</a></li>
+        {% if request.session.move_file_id != None%}
+            <li><a href="/paste/">Paste file</a></li>
+        {% endif %}
         <li><p> Current directory: {{ request.session.current_directory }}</p></li>
     </ul>
 
@@ -51,6 +53,9 @@
             <li class="eventButton"><a href="/remove/{{ i.id }}">Remove</a></li>
             <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>
             <li class="eventButton"><a href="/move/{{ i.id }}">Move</a></li>
+            {% if not i.czy_udostepniony %}
+                <li class="eventButton"><a href="/share/{{ i.id }}">Share</a></li>
+            {% endif %}
         </ul>
         <hr>
     {% endfor %}

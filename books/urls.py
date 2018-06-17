@@ -17,10 +17,11 @@ urlpatterns = (
      path('storage_control/file_upload', views.file_upload),
      path('paste/', views.paste),
      url('directory/(\d+)/$', views.change_directory),
-     url('^(\d+)/$', views.file_available),
+     url('download/(\d+)/$', views.file_available),
      url('remove/(\d+)/$', views.remove),
      url('rename/(\d+)/$', views.rename),
      url('move/(\d+)/$', views.move),
+     url('share/(\d+)/$', views.share_file),
      url('^', include('django.contrib.auth.urls')),
      url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
 )

@@ -90,8 +90,24 @@ def CatalogInUse(konto: Konto, name):
     return Struktura_Konta.objects.get(konto=konto).lista_katalogow.filter(nazwa=name).exists()
 
 
+def share_file(request, file_id):
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    plik = GetFile(konto, file_id, request.session['current_directory'])
+    plik.czy_udostepniony = True
+    plik.save()
+    return redirect('/storage_control/')
+
+
 def file_available(request, file_id):
-    return HttpResponse("You want file %s." % file_id)
+    if Plik.objects.filter(id=file_id).exists():
+        plik = Plik.objects.get(id=file_id)
+        if plik.czy_udostepniony:
+            return render(request, 'file_avaliable.html', {'file': plik})
+        else:
+            return render(request, 'wrong_access.html')
+    return HttpResponse('There is no such a file')
 
 
 def directory_create(request):
