@@ -62,11 +62,15 @@ body {
 }
 
 .file_size {
-    width: 30%;
+    width: 25%;
 }
 
 .file_shared {
     width: 10%;
+}
+
+.file_id {
+    width: 5%;
 }
 
 .files_list {
