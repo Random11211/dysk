@@ -48,7 +48,7 @@
     {% for i in file %}
         <ul class="file">
             <a href="{{ i.adres.url }}"><li class="file_name">{{ i.nazwa }}</li></a>
-            <li class="file_size">{{ i.adres.size }} B</li>
+            <li class="file_size">{{ i.size_format }}</li>
             <li class="file_shared">{{ i.czy_udostepniony }}</li>
             <li class="eventButton"><a href="/remove/{{ i.id }}">Remove</a></li>
             <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>

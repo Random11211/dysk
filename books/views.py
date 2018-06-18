@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.http import HttpResponse
 from django.conf import settings
+from django.template import defaultfilters
 from django.contrib.sessions.models import Session
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
@@ -50,7 +51,7 @@ def index(request):
     #User.objects.all().delete()
     #Struktura_Konta.objects.all().delete()
 
-    return render(request, 'home.html')
+    return render(request, 'main.html')
 
 
 def currentAccount(user):
@@ -82,7 +83,7 @@ def NameInUse(name):
     return Plik.objects.filter(nazwa=name).exists()
 
 
-def SizePresentation(pojemnosc):
+def SizePresentation(size):
     return True
 
 
@@ -139,6 +140,9 @@ def file_upload(request):
                 if not NameInUse(form.data['nazwa']):
                     form.save()
                     katalog.lista_plikow.add(Plik.objects.last())
+                    plik = Plik.objects.last()
+                    plik.size_format = defaultfilters.filesizeformat(plik.adres.size)
+                    plik.save()
                     return redirect('/storage_control/')
     form = UploadFileForm()
     context_dict["form"] = form
@@ -210,7 +214,7 @@ def rename(request, file_id):
     #import pdb; pdb.set_trace()
     if request.method == 'POST':
         newName = request.POST.get('newName', None)
-        if not NameInUse(konto):
+        if not NameInUse(newName):
             RenameFile(file_id, konto, newName)
             return redirect('/storage_control/')
         return redirect('/rename/%s' %file_id)
