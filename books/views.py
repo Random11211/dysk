@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.http import HttpResponse
 from django.conf import settings
+import os
 from django.template import defaultfilters
 from django.contrib.sessions.models import Session
 from django.core.files.storage import FileSystemStorage
@@ -104,6 +105,8 @@ def share_file(request, file_id):
 def file_available(request, file_id):
     if Plik.objects.filter(id=file_id).exists():
         plik = Plik.objects.get(id=file_id)
+        if request.user.is_authenticated and UserFile(currentAccount(request.user), file_id):
+            return render(request, 'file_avaliable.html', {'file': plik})
         if plik.czy_udostepniony:
             return render(request, 'file_avaliable.html', {'file': plik})
         else:
@@ -174,6 +177,11 @@ def UserFile(konto: Konto, file_id):
             if e.id == int(file_id):
                 return True
     return False
+
+
+def UserDirectory(konto: Konto, directory_id):
+    return Struktura_Konta.objects.get(konto=konto).lista_katalogow.filter(id=directory_id).exists()
+
 
 
 def GetFile(konto: Konto, file_id, directory_name):
@@ -254,11 +262,42 @@ def move(request, file_id):
     return redirect('/storage_control/')
 
 
+def DeleteDirectory(konto, directory_id):
+    struktura = Struktura_Konta.objects.get(konto=konto)
+    folder = Katalog.objects.get(id=directory_id)
+    struktura.lista_katalogow.remove(folder)
+
+
+def directoryRemove(request, directory_id):
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    import pdb; pdb.set_trace()
+    if UserDirectory(konto, directory_id):
+        folder = Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(id=directory_id)
+        pliki = folder.lista_plikow.all()
+        for i in pliki:
+            RemoveFile(i.id, konto)
+        DeleteDirectory(konto, folder.id)
+    return redirect('/storage_control/')
+
+
+def download(request, file_id):
+    file = Plik.objects.get(id=file_id)
+    file_path = os.path.join(settings.MEDIA_ROOT, file.adres)
+    if os.path.exists(file_path):
+        with open(file_path, 'rb') as fh:
+
+            response = HttpResponse(fh.read(), content_type="application/")
+
+
+
 def change_directory(request, directory_id):
     katalog = Struktura_Konta.objects.get(konto=currentAccount(request.user)).lista_katalogow.get(id=directory_id)
     request.session['current_id'] = katalog.id
     request.session['current_directory'] = katalog.nazwa
     return redirect('/storage_control/')
+
 
 def storage_control(request):
     context_dict = {}
@@ -271,9 +310,9 @@ def storage_control(request):
         request.session['current_id'] = katalog.id
         request.session['current_directory'] = katalog.nazwa
     lista = UserFiles(konto, request.session['current_directory'])
-    context_dict["konto"] = konto
+    context_dict["konto"] = defaultfilters.filesizeformat(konto.pojemnosc)
     context_dict["file"] = lista
-    context_dict["pozostalo"] = left_space(konto)
+    context_dict["pozostalo"] = defaultfilters.filesizeformat(left_space(konto))
     context_dict["user"] = user
     context_dict["katalogi"] = Struktura_Konta.objects.get(konto=konto)
     #request.session['current_directory'] = None
@@ -286,6 +325,8 @@ def cloud_menu(request):
     return redirect(request, 'storage_control.html')
 
 
+
+
 def registration(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
@@ -296,7 +337,7 @@ def registration(request):
             user = authenticate(username=username, password=raw_password)
             login(request, user)
 
-            Konto.objects.create(pojemnosc=500000000, uzytkownik=user)
+            Konto.objects.create(pojemnosc=52428800, uzytkownik=user)
             Struktura_Konta.objects.create(konto=Konto.objects.get(uzytkownik=user))
             struktura = Struktura_Konta.objects.get(konto=Konto.objects.get(uzytkownik=user))
             Katalog.objects.create(nazwa="folder")

@@ -23,14 +23,14 @@
     </ul>
 
     <div class="account_info">
-        <p>Account space: {{ konto.pojemnosc }} B</p>
+        <p>Account space: {{ konto }} B</p>
         <p>Left space: {{ pozostalo }} B</p>
     </div>
 
     <div class="folder_list">
         <p>Your directories</p>
         {% for i in katalogi.lista_katalogow.all %}
-            <li><a href="/directory/{{ i.id }}">{{ i.nazwa }}</a></li>
+            <li><a href="/directory/{{ i.id }}">{{ i.nazwa }} </a><a href="/directoryRemove/{{ i.id }}">Remove</a> </li>
         {% endfor %}
     </div>
 {% endblock %}
@@ -40,6 +40,7 @@
             <li class="file_name">Name</li>
             <li class="file_size">Size</li>
             <li class="file_shared">Share</li>
+            <li class="file_id">Id</li>
         </ul>
     <hr>
 
@@ -47,12 +48,14 @@
 
     {% for i in file %}
         <ul class="file">
-            <a href="{{ i.adres.url }}"><li class="file_name">{{ i.nazwa }}</li></a>
+            <li class="file_name">{{ i.nazwa }}</li>
             <li class="file_size">{{ i.size_format }}</li>
             <li class="file_shared">{{ i.czy_udostepniony }}</li>
+            <li class="file_id">{{ i.id }}</li>
             <li class="eventButton"><a href="/remove/{{ i.id }}">Remove</a></li>
             <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>
             <li class="eventButton"><a href="/move/{{ i.id }}">Move</a></li>
+            <li class="eventButton"><a href="/download/{{ i.id }}">Download</a></li>
             {% if not i.czy_udostepniony %}
                 <li class="eventButton"><a href="/share/{{ i.id }}">Share</a></li>
             {% endif %}
