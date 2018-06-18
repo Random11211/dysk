@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.http import HttpResponse
 from django.conf import settings
+from django.template import defaultfilters
 from django.contrib.sessions.models import Session
 from django.core.files.storage import FileSystemStorage
 from django.contrib.auth.models import User
@@ -50,7 +51,7 @@ def index(request):
     #User.objects.all().delete()
     #Struktura_Konta.objects.all().delete()
 
-    return render(request, 'home.html')
+    return render(request, 'main.html')
 
 
 def currentAccount(user):
@@ -58,7 +59,7 @@ def currentAccount(user):
 
 
 def file_uploadable(konto : Konto, file_size):
-    if left_space(konto) + file_size >= 0:
+    if left_space(konto) - file_size >= 0:
         return True
     return False
 
@@ -78,20 +79,36 @@ def left_space(konto: Konto):
     return konto.pojemnosc - size
 
 
-def NameIsFree(name):
+def NameInUse(name):
     return Plik.objects.filter(nazwa=name).exists()
 
 
-def SizePresentation(pojemnosc):
+def SizePresentation(size):
     return True
 
 
-def CatalogFree(konto: Konto, name):
+def CatalogInUse(konto: Konto, name):
     return Struktura_Konta.objects.get(konto=konto).lista_katalogow.filter(nazwa=name).exists()
 
 
+def share_file(request, file_id):
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    plik = GetFile(konto, file_id, request.session['current_directory'])
+    plik.czy_udostepniony = True
+    plik.save()
+    return redirect('/storage_control/')
+
+
 def file_available(request, file_id):
-    return HttpResponse("You want file %s." % file_id)
+    if Plik.objects.filter(id=file_id).exists():
+        plik = Plik.objects.get(id=file_id)
+        if plik.czy_udostepniony:
+            return render(request, 'file_avaliable.html', {'file': plik})
+        else:
+            return render(request, 'wrong_access.html')
+    return HttpResponse('There is no such a file')
 
 
 def directory_create(request):
@@ -100,7 +117,7 @@ def directory_create(request):
     if request.method == 'POST' and 'directory' in request.POST:
         form = NewDirectory(request.POST)
         if form.is_valid():
-            if not CatalogFree(konto, form.data['nazwa']):
+            if not CatalogInUse(konto, form.data['nazwa']):
                 form.save()
                 katalog = Katalog.objects.last()
                 Struktura_Konta.objects.get(konto=konto).lista_katalogow.add(katalog)
@@ -120,25 +137,121 @@ def file_upload(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             if file_uploadable(konto, form.__sizeof__()):
-                if not NameIsFree(form.data['nazwa']):
+                if not NameInUse(form.data['nazwa']):
                     form.save()
                     katalog.lista_plikow.add(Plik.objects.last())
+                    plik = Plik.objects.last()
+                    plik.size_format = defaultfilters.filesizeformat(plik.adres.size)
+                    plik.save()
                     return redirect('/storage_control/')
     form = UploadFileForm()
     context_dict["form"] = form
     return render(request, 'file_upload.html', context_dict)
 
 
+def RemoveFile(file_id, konto : Konto):
+    foldery = Struktura_Konta.objects.get(konto=konto).lista_katalogow.all()
+    plik : Plik
+    folder_id : int
+    for i in foldery:
+        pliki = i.lista_plikow.all()
+        for e in pliki:
+            if e.id == int(file_id):
+                plik = e
+                folder_id = i.id
+                katalog = Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(id=folder_id)
+                katalog.lista_plikow.remove(plik)
+                plik.delete()
+                return True
+    return False
+
+
+def UserFile(konto: Konto, file_id):
+    foldery = Struktura_Konta.objects.get(konto=konto).lista_katalogow.all()
+    for i in foldery:
+        pliki = i.lista_plikow.all()
+        for e in pliki:
+            if e.id == int(file_id):
+                return True
+    return False
+
+
+def GetFile(konto: Konto, file_id, directory_name):
+    return Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(nazwa=directory_name).lista_plikow.get(id=file_id)
+
+
 def remove(request, file_id):
-    return HttpResponse("You want to remove file %s." %file_id)
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    if RemoveFile(file_id, konto):
+        return redirect('/storage_control/')
+    return render(request, 'wrong_access.html')
+
+
+def RenameFile(file_id, konto : Konto, newName):
+    foldery = Struktura_Konta.objects.get(konto=konto).lista_katalogow.all()
+    plik: Plik
+    folder_id: int
+    for i in foldery:
+        pliki = i.lista_plikow.all()
+        for e in pliki:
+            if e.id == int(file_id):
+                plik = e
+                plik.nazwa = newName
+                plik.save()
+                return True
+    return False
 
 
 def rename(request, file_id):
-    return HttpResponse("You want to rename file %s." %file_id)
+    context_dict = {}
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    if not UserFile(konto, file_id):
+        return render(request, 'wrong_access.html')
+    #import pdb; pdb.set_trace()
+    if request.method == 'POST':
+        newName = request.POST.get('newName', None)
+        if not NameInUse(newName):
+            RenameFile(file_id, konto, newName)
+            return redirect('/storage_control/')
+        return redirect('/rename/%s' %file_id)
+    context_dict["id"] = file_id
+    return render(request, 'rename.html', context_dict)
 
+
+def moveFile(konto: Konto, file_id, from_directory_name, to_directory_name):
+    if from_directory_name == to_directory_name:
+        return
+    from_directory = Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(nazwa=from_directory_name)
+    to_directory = Struktura_Konta.objects.get(konto=konto).lista_katalogow.get(nazwa=to_directory_name)
+    file = GetFile(konto, file_id, from_directory_name)
+    from_directory.lista_plikow.remove(file)
+    to_directory.lista_plikow.add(file)
+    return
+
+
+def paste(request):
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    if not request.session.get('move_file_id', None) is None:
+        moveFile(konto, request.session['move_file_id'], request.session['file_base_directory'], request.session['current_directory'])
+        request.session['move_file_id'] = None
+        request.session['file_base_directory'] = None
+    return redirect('/storage_control/')
 
 def move(request, file_id):
-    return HttpResponse("You want to move file %s." %file_id)
+    if not request.user.is_authenticated:
+        return render(request, 'wrong_access.html')
+    konto = currentAccount(request.user)
+    if UserFile(konto, file_id):
+        if request.session.get('move_file_id', None) is None:
+            request.session['move_file_id'] = file_id
+            request.session['file_base_directory'] = request.session['current_directory']
+    return redirect('/storage_control/')
 
 
 def change_directory(request, directory_id):

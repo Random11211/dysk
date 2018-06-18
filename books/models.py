@@ -6,6 +6,7 @@ class Plik(models.Model):
     id = models.IntegerField(primary_key=True)
     nazwa = models.CharField(max_length=50)
     adres = models.FileField(upload_to='media/')
+    size_format = models.CharField(max_length=10)
     czy_udostepniony = models.BooleanField(default=False)
 
 

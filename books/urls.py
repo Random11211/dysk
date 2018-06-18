@@ -6,7 +6,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import logout
 
 urlpatterns = (
-     path('', views.index),
+     path('', views.main),
      path('login/', views.login),
      path('registration/', views.registration),
      path('cloud_menu/', views.cloud_menu),
@@ -15,11 +15,13 @@ urlpatterns = (
      path('about/', views.about),
      path('storage_control/directory_create/', views.directory_create),
      path('storage_control/file_upload', views.file_upload),
+     path('paste/', views.paste),
      url('directory/(\d+)/$', views.change_directory),
-     url('^(\d+)/$', views.file_available),
+     url('download/(\d+)/$', views.file_available),
      url('remove/(\d+)/$', views.remove),
      url('rename/(\d+)/$', views.rename),
      url('move/(\d+)/$', views.move),
+     url('share/(\d+)/$', views.share_file),
      url('^', include('django.contrib.auth.urls')),
      url('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL}, name='logout'),
 )
