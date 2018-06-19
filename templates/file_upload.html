@@ -1,14 +1,19 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registrationStyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mainStyle.css' %}">
+    <title>CSS - Upload</title>
 </head>
 <body>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" name="file">Upload</button>
-    </form>
+    <div class="main_block">
+        <form class="jp-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="mybutton" type="submit" name="file">Upload</button>
+        </form>
+    </div>
 </body>
 </html>

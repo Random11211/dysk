@@ -1,21 +1,36 @@
 body {
     padding: 10px;
+    background-image: url("background_main.png");
+    font-family: Roboto;
+    font-size: medium;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+#icon-iconBack {
+    font-size: xx-large;
+}
+
+.mybutton:hover {
+    background-color: rgba(240, 248, 255, 1);
+    border: 2px solid DodgerBlue;
+    color: black;
 }
 
 .left_dock {
+    background-color: rgba(240, 248, 255, .9);
     position: fixed;
     left: 0;
     top: 10%;
     height: 90%;
     width: 20%;
-    background-color: greenyellow;
 }
-
-
 
 .fill_dock {
     position: fixed;
-    background-color: yellow;
+    background-color: rgba(240, 248, 255, .5);
     overflow: scroll;
     left: 20%;
     top: 10%;
@@ -33,19 +48,41 @@ body {
 }
 
 .user {
-    color: whitesmoke;
+    color: rgba(240, 248, 255, 1);
+    text-align: center;
 }
 
 .menu_items {
     list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
 .menu_items > li {
     overflow: auto;
-    padding: 25px 10px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.menu_items > li > a {
+    display: block;
+    color: midnightblue;
+    padding: 10px 10px;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.menu_items > li > a:hover {
+    background-color: DodgerBlue;
+    color: white;
+}
+
+.account_info {
+    padding: 10px;
 }
 
 .table_description {
+    font-weight: bold;
     display: table;
     margin: 15px 5px;
     list-style-type: none;

@@ -1,15 +1,19 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registrationStyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mainStyle.css' %}">
+    <title>CSS - Creating Directory</title>
 </head>
 <body>
-    <form method="post">
+<div class="main_block">
+    <form class="jp-form" method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" name="directory">Create</button>
+        <button class="mybutton" type="submit" name="directory">Create</button>
     </form>
-
+</div>
 </body>
 </html>

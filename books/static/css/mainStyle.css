@@ -77,6 +77,11 @@ p {
     word-wrap: break-word;
 }
 
+.jp-form {
+    border: 2px solid DodgerBlue;
+    padding: 10px;
+}
+
 /* #region FooterRegion */
 footer {
     border-top: .3px solid black;

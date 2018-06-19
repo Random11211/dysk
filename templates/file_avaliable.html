@@ -1,11 +1,18 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registrationStyle.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mainStyle.css' %}">
+    <title>CSS - Download</title>
 </head>
 <body>
-    A page to download a shared file {{ id }}
-    <a href="{{ file.adres.url }}">Download</a>
+<div class="main_block">
+    <div class="jp-form">
+        <p>A page to download a shared file {{ id }}</p>
+        <a href="{{ file.adres.url }}">Download</a>
+    </div>
+</div>
 </body>
 </html>

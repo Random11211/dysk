@@ -3,12 +3,14 @@
 {% load static %}
 
 {% block menu_bar %}
-    <div class="go_back">
-        <a href="../main"><button>Go Back</button></a>
+    <div class="">
+        <a href="../main">
+            <i id="icon-iconBack" class="material-icons hide-small">arrow_back</i> Go Main
+        </a>
     </div>
 
     <div class="user">
-        <p>Hello, {{ use.get_username }}</p>
+        <p>Hello,</p> <h4>{{ use.get_username }}</h4>
     </div>
 {% endblock %}
 
@@ -16,52 +18,52 @@
     <ul class="menu_items">
         <li><a href="/storage_control/file_upload">Add File</a></li>
         <li><a href="/storage_control/directory_create">Add Directory</a></li>
-        {% if request.session.move_file_id != None%}
+        {% if request.session.move_file_id != None %}
             <li><a href="/paste/">Paste file</a></li>
         {% endif %}
+        <hr>
         <li><p> Current directory: {{ request.session.current_directory }}</p></li>
     </ul>
-
+    </br>
     <div class="account_info">
-        <p>Account space: {{ konto }} B</p>
-        <p>Left space: {{ pozostalo }} B</p>
+        <p>Account space: {{ konto }}</p>
+        <p>Left space: {{ pozostalo }}</p>
     </div>
-
+    <hr>
     <div class="folder_list">
         <p>Your directories</p>
         {% for i in katalogi.lista_katalogow.all %}
-            <li><a href="/directory/{{ i.id }}">{{ i.nazwa }} </a><a href="/directoryRemove/{{ i.id }}">Remove</a> </li>
+            <li><a href="/directory/{{ i.id }}">{{ i.nazwa }} </a><a href="/directoryRemove/{{ i.id }}">Remove</a></li>
         {% endfor %}
     </div>
 {% endblock %}
 
 {% block files_list %}
-        <ul class="table_description">
-            <li class="file_name">Name</li>
-            <li class="file_size">Size</li>
-            <li class="file_shared">Share</li>
-            <li class="file_id">Id</li>
-        </ul>
+    <ul class="table_description">
+        <li class="file_name">Name</li>
+        <li class="file_size">Size</li>
+        <li class="file_shared">Share</li>
+        <li class="file_id">Id</li>
+    </ul>
+
     <hr>
 
     <div class="files_list">
-
-    {% for i in file %}
-        <ul class="file">
-            <li class="file_name">{{ i.nazwa }}</li>
-            <li class="file_size">{{ i.size_format }}</li>
-            <li class="file_shared">{{ i.czy_udostepniony }}</li>
-            <li class="file_id">{{ i.id }}</li>
-            <li class="eventButton"><a href="/remove/{{ i.id }}">Remove</a></li>
-            <li class="eventButton"><a href="/rename/{{ i.id }}">Rename</a></li>
-            <li class="eventButton"><a href="/move/{{ i.id }}">Move</a></li>
-            <li class="eventButton"><a href="/download/{{ i.id }}">Download</a></li>
-            {% if not i.czy_udostepniony %}
-                <li class="eventButton"><a href="/share/{{ i.id }}">Share</a></li>
-            {% endif %}
-        </ul>
-        <hr>
-    {% endfor %}
-
+        {% for i in file %}
+            <ul class="file">
+                <li class="file_name">{{ i.nazwa }}</li>
+                <li class="file_size">{{ i.size_format }}</li>
+                <li class="file_shared">{{ i.czy_udostepniony }}</li>
+                <li class="file_id">{{ i.id }}</li>
+                <li class="button"><a href="/remove/{{ i.id }}">Remove <br/></a></li>
+                <li class="button"><a href="/rename/{{ i.id }}">Rename <br/></a></li>
+                <li class=""><a href="/move/{{ i.id }}">Move <br/></a></li>
+                <li class=""><a href="/download/{{ i.id }}">Download <br/></a></li>
+                {% if not i.czy_udostepniony %}
+                    <li class=""><a href="/share/{{ i.id }}">Share</a></li>
+                {% endif %}
+            </ul>
+            <hr>
+        {% endfor %}
     </div>
 {% endblock %}
